@@ -5,6 +5,7 @@
 #include <istream>
 #include <sstream>
 #include <cassert>
+#include <memory>
 #include "PsevdoAdjac.h";
 using namespace std;
 

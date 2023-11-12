@@ -3,12 +3,12 @@
 PointerAdjac::PointerAdjac(AdjacencyMatrix* p)
 {
     ptr = p;
-    count = 1;
+    count = 0;
 }
 AdjacencyMatrix* PointerAdjac::operator -> ()
 {
     count++;
-    std::cout << "”казатель сработал!\n";
+    std::cout << "”казатель сработал в " << count << " раз!\n";
     return ptr;
 }
 PointerAdjac::~PointerAdjac()

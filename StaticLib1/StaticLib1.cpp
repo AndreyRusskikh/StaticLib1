@@ -157,9 +157,9 @@ std::istream& operator>>(std::istream& is, AdjacencyMatrix& adjac)
 
 std::ostream& operator<<(std::ostream& os, const AdjacencyMatrix& adjac)
 {
-	if (adjac.matrix[0][0] == -1)
+	if (adjac._numVertices <= 0 || adjac.matrix[0][0] == -1)
 	{
-		std::cout << "Матрица пуста" << "\n";
+		cout << "Матрица пуста\n";
 		return os;
 	}
 	os << adjac._numVertices << "\n";
@@ -317,12 +317,12 @@ AdjacencyMatrix& AdjacencyMatrix::operator+=(const PsevdoAdjac& other)
 
 	int count = 0;
 	int b = 0;
-	while (other.matrixs[0][b] != -2)
+	while (other.matrixs[0][b] == 0 || other.matrixs[0][b] == 1 || other.matrixs[0][b] == -1)
 	{
 		b++;
 		count++;
 	}
-	if (count - 1 != _numVertices)
+	if (count != _numVertices)
 	{
 		cout << "Размеры переданной или считываемой матрицы не совпадают с принимающей матрицой\n";
 		return *this;
@@ -383,7 +383,7 @@ void AdjacencyMatrix::createMatrix(int numVert)
 			matrix[i] = new int[numVert];
 			for (int j = 0; j < numVert; j++)
 			{
-				matrix[i][j] = -1;
+				matrix[i][j] = 0;
 			}
 		}
 	}
@@ -498,12 +498,13 @@ void AdjacencyMatrix::deleteMatrix()
 {
 	if (matrix == nullptr)
 		return;
-
+	
 	for (int i = 0; i < _numVertices; i++)
 	{
 		delete[] matrix[i];
 	}
 	delete[] matrix;
+	matrix = nullptr;
 }
 
 

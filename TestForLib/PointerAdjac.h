@@ -1,7 +1,7 @@
 #pragma once
+
 #include <AdjacencyMatrix.h>
-class PointerAdjac:
-    public AdjacencyMatrix
+class PointerAdjac
 {
     AdjacencyMatrix* ptr;
     int count;
