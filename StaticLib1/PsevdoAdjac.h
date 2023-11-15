@@ -1,10 +1,16 @@
 #pragma once
+#include "AdjacencyMatrix.h"
+
 class PsevdoAdjac
 {
 public:
-    PsevdoAdjac(int** row, int numRowStart, int numRowEnd);
+    PsevdoAdjac(int*& _ptr, int _numRowStart, int _countMat, int _countNumELMat);
     ~PsevdoAdjac();
+
+    PsevdoAdjac& operator=(const AdjacencyMatrix& other);
+    
     int _numRowStart;
-    int _numRowEnd;
-    int** matrixs;
+    int countMat;
+    int countNumELMat;
+    int*& ptr;
 };

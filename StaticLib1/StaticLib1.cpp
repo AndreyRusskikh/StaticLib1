@@ -174,92 +174,32 @@ std::ostream& operator<<(std::ostream& os, const AdjacencyMatrix& adjac)
 	}
 	return os;
 }
-int** AdjacencyMatrix::operator()(int row, int end)
+PsevdoAdjac AdjacencyMatrix::operator()(int start, int count)
 {
+	PsevdoAdjac psevNull(matrix[start], 0, 0, _numVertices);
+
 	if (_numVertices <= 0)
 	{
 		cout << "Матрица пуста\n";
-		return nullptr;
-	}
-	if (row > end)
-	{
-		assert(row < end);
-		return nullptr;
-	}
-	if (row < 0 && row > _numVertices)
-	{
-		assert(row >= 0 && row < _numVertices);
-		return nullptr;
-
-	}
-	if (end < 0 && end > _numVertices)
-	{
-		assert(end >= 0 && end < _numVertices);
-		return nullptr;
+		return psevNull;
 	}
 
-	int numArr = (end - row) + 1;
-	int** matrixs = new int* [numArr];
-	int j = 0;
-	int k = 0;
-	int p = row;
-	for (int i = 0; i < numArr; i++)
+	if (start < 0 && start > _numVertices)
 	{
-		matrixs[i] = new int[numArr + 1];
-		k = 0;
-		for (j = row; j < end + 1; j++)
-		{
-			matrixs[i][k] = matrix[p][j];
-			k++;
-		}
-		matrixs[i][j + 1] = -2;
-		p++;
+		assert(start >= 0 && start < _numVertices);
+		return psevNull;
+
 	}
-	return matrixs;
+	if (count < 0 && count + start > _numVertices)
+	{
+		assert(count >= 0 && count + start < _numVertices);
+		return psevNull;
+	}
+	PsevdoAdjac psev(matrix[start], start, count, _numVertices);
+	
+	return psev;
 }
 
-int** AdjacencyMatrix::operator()(int row, int end, int numMatrix)
-{
-	if (_numVertices <= 0)
-	{
-		cout << "Матрица пуста\n";
-		return nullptr;
-	}
-	if (row > end)
-	{
-		assert(row < end);
-		return nullptr;
-	}
-
-	if (row < 0 && row > _numVertices)
-	{
-		assert(row >= 0 && row < _numVertices);
-		return nullptr;
-
-	}
-	if (end < 0 && end > _numVertices)
-	{
-		assert(end >= 0 && end < _numVertices);
-		return nullptr;
-	}
-
-	int numArr = (end - row) + 1;
-	int** matrixs = new int* [numArr];
-	int p = row;
-	int j = 0;
-	for (int i = 0; i < numArr; i++)
-	{
-		matrixs[i] = new int[_numVertices + 1];
-		for (j = 0; j < _numVertices; j++)
-		{
-			matrixs[i][j] = matrix[p][j];
-		}
-		matrixs[i][j + 1] = -2;
-
-		p++;
-	}
-	return matrixs;
-}
 
 void AdjacencyMatrix::writeMatrixToFile(std::ofstream& ofs)
 {
@@ -290,63 +230,6 @@ AdjacencyMatrix& AdjacencyMatrix::operator=(const AdjacencyMatrix& other)
 	return *this;
 
 }
-
-AdjacencyMatrix& AdjacencyMatrix::operator=(const PsevdoAdjac& other)
-{
-	_numVertices = (other._numRowEnd - other._numRowStart) + 1;
-	deleteMatrix();
-	createMatrix(_numVertices);
-	for (int i = 0; i < _numVertices; i++)
-	{
-		for (int j = 0; j < _numVertices; j++)
-		{
-			matrix[i][j] = other.matrixs[i][j];
-		}
-	}
-	if (matrix[0][0] == -1)
-	{
-		matrix[0][0] = 0;
-	}
-
-	return *this;
-}
-
-AdjacencyMatrix& AdjacencyMatrix::operator+=(const PsevdoAdjac& other)
-{
-	//_numVertices = (other._numRowEnd - other._numRowStart) + 1;
-
-	int count = 0;
-	int b = 0;
-	while (other.matrixs[0][b] == 0 || other.matrixs[0][b] == 1 || other.matrixs[0][b] == -1)
-	{
-		b++;
-		count++;
-	}
-	if (count != _numVertices)
-	{
-		cout << "Размеры переданной или считываемой матрицы не совпадают с принимающей матрицой\n";
-		return *this;
-
-	}
-	int j = 0;
-	int k = 0;
-
-	for (int i = other._numRowStart; i < other._numRowEnd; i++)
-	{
-		for (int j = 0; j < _numVertices; j++)
-		{
-			matrix[i][j] = other.matrixs[k][j];
-		}
-		k++;
-	}
-
-	if (matrix[0][0] == -1)
-	{
-		matrix[0][0] = 0;
-	}
-	return *this;
-}
-
 
 AdjacencyMatrix::AdjacencyMatrix(const AdjacencyMatrix& other)
 {

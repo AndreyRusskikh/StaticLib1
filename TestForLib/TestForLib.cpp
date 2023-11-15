@@ -22,16 +22,13 @@ int main()
 
 
     ptrAdjac->addDefault(10);
-    ptrAdjac2->addDefault(10);
+   // ptrAdjac2->addDefault(10);
+   
 
-    PsevdoAdjac psevdAdjac(ptrAdjac->operator()(3, 6), 3, 6);
-    PsevdoAdjac psevdAdjac2(ptrAdjac->operator()(0, 1, 10), 0, 1);
+    adjac2->operator()(3, 6) = *adjac;
     
-    ptrAdjac->operator=(psevdAdjac);
-
-    ptrAdjac2->operator+=(psevdAdjac2);
-
-    ptrAdjac->Show();
+    
+    ptrAdjac3->Show();
     ptrAdjac2->Show();
 
 

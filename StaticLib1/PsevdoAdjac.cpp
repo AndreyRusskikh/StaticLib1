@@ -1,40 +1,33 @@
-#include "pch.h";
+#include "pch.h"
 #include "PsevdoAdjac.h"
-PsevdoAdjac::PsevdoAdjac(int** row, int numRowStart, int numRowEnd)
+#include <iostream>
+
+PsevdoAdjac::PsevdoAdjac(int*& _ptr, int _numRowStart, int _countMat, int _countNumELMat)
+	: ptr(_ptr), _numRowStart(_numRowStart), countMat(_countMat), countNumELMat(_countNumELMat)
 {
-    _numRowStart = numRowStart;
-    _numRowEnd = numRowEnd;
-    int matSize = numRowEnd - numRowStart + 1;
-    int a = 0;
-    while (row[0][a] == 0 || row[0][a] == 1 || row[0][a] == -1)
-    {
-        a++;
-    }
-    matrixs = new int* [matSize];
-    for (int i = 0; i < matSize; ++i)
-    {
-        matrixs[i] = new int[a];
-    }
-    for (int b = 0; b < matSize; b++)
-    {
-        for (size_t j = 0; j < a; j++)
-        {
-            matrixs[b][j] = row[b][j];
-        }
-    }
 
 }
 
 PsevdoAdjac::~PsevdoAdjac()
 {
-    if (matrixs == nullptr)
-        return;
 
-    for (int i = 0; i < _numRowStart; ++i)
-    {
-        delete[] matrixs[i];
-    }
+}
 
-    delete[] matrixs;
-    matrixs = nullptr;
+PsevdoAdjac& PsevdoAdjac::operator=(const AdjacencyMatrix& other)
+{
+	if (other._numVertices != countNumELMat)
+	{
+		std::cout << "Размеры переданной или считываемой матрицы не совпадают с принимающей матрицой\n";
+		return *this;
+	}
+
+	for (int i = _numRowStart; i < countMat; i++)
+	{
+		for (int j = 0; j < countNumELMat; j++)
+		{
+			ptr[j] = other.matrix[i][j];
+		}
+	}
+
+	return *this;
 }

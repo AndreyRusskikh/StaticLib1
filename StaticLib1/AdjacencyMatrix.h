@@ -27,8 +27,8 @@ public:
     AdjacencyMatrix& operator+=(const PsevdoAdjac& other);
     
     AdjacencyMatrix(const AdjacencyMatrix& other);
-    int** operator()(int row, int end);
-    int** operator()(int row, int end, int numMatrix);
+    PsevdoAdjac operator()(int row, int end);
+    PsevdoAdjac operator()(int row, int end, int numMatrix);
 
     // Додати ребро між вершинами from і to
     void addEdge(int from, int to);
@@ -50,7 +50,6 @@ public:
     friend std::istream& operator>>(std::istream& is, AdjacencyMatrix& adjac);
     friend std::ostream& operator<<(std::ostream& os, const AdjacencyMatrix& adjac);
 
-private:
     int _numVertices;  // Розмір матриці
     int** matrix = new int* [_numVertices];  // Матриця суміжності
 
