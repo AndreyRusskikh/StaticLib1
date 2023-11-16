@@ -9,9 +9,9 @@
 
 // Добавьте сюда заголовочные файлы для предварительной компиляции
 #include "framework.h"
-#include "AdjacencyMatrix.h";
-#include "EdgeList.h";
-#include "IncidenceMatrix.h";
-#include "PsevdoAdjac.h";
+#include "PseudoAdjac.h"
+#include "AdjacencyMatrix.h"
+#include "EdgeList.h"
+#include "IncidenceMatrix.h"
 
 #endif //PCH_H

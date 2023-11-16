@@ -18,17 +18,28 @@ int main()
 
     PointerAdjac ptrAdjac(adjac);
     PointerAdjac ptrAdjac2(adjac2);
-    PointerAdjac ptrAdjac3(adjac3);
 
 
     ptrAdjac->addDefault(10);
+    ptrAdjac->addEdge(0, 1);
+    ptrAdjac->addEdge(1, 1);
+    ptrAdjac->addEdge(3, 1);
+    ptrAdjac->addEdge(4, 2);
+    ptrAdjac->addEdge(5, 5);
+    ptrAdjac->addEdge(8, 9);
+    ptrAdjac->addEdge(3, 6);
+    ptrAdjac->addEdge(2, 4);
+    ptrAdjac->addEdge(3, 4);
+    ptrAdjac->addEdge(3, 2);
+    ptrAdjac->addEdge(2, 3);
+    ptrAdjac->addEdge(9, 1);
+    ptrAdjac->addEdge(8, 0);
    // ptrAdjac2->addDefault(10);
    
 
-    adjac2->operator()(3, 6) = *adjac;
+    adjac2->operator()(2, 3) = *adjac;
     
-    
-    ptrAdjac3->Show();
+
     ptrAdjac2->Show();
 
 

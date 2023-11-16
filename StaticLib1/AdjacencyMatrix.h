@@ -1,13 +1,10 @@
 #pragma once
 #include <fstream>
 #include <iostream>
-#include <cmath>;
-#include <istream>
-#include <sstream>
-#include <cassert>
-#include <memory>
-#include "PsevdoAdjac.h";
+
 using namespace std;
+
+class PsevdoAdjac;
 
 class AdjacencyMatrix
 {
@@ -23,12 +20,11 @@ public:
     int& operator[](const int index);
 
     AdjacencyMatrix& operator=(const AdjacencyMatrix& other);
-    AdjacencyMatrix& operator=(const PsevdoAdjac& other);
-    AdjacencyMatrix& operator+=(const PsevdoAdjac& other);
+   
     
     AdjacencyMatrix(const AdjacencyMatrix& other);
     PsevdoAdjac operator()(int row, int end);
-    PsevdoAdjac operator()(int row, int end, int numMatrix);
+
 
     // Додати ребро між вершинами from і to
     void addEdge(int from, int to);
@@ -58,4 +54,5 @@ public:
 
     // Видалення матриці
     void deleteMatrix();
+   
 };

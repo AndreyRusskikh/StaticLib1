@@ -30,6 +30,9 @@
     <ClInclude Include="EdgeList.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="PseudoAdjac.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="StaticLib1.cpp">
@@ -38,7 +41,7 @@
     <ClCompile Include="pch.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="PsevdoAdjac.cpp">
+    <ClCompile Include="PseudoAdjac.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>

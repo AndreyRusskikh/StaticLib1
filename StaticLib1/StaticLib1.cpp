@@ -1,7 +1,6 @@
-﻿// StaticLib1.cpp : Определяет функции для статической библиотеки.
-//
-
+﻿
 #include "pch.h"
+#include "AdjacencyMatrix.h"
 #include "framework.h"
 
 AdjacencyMatrix::AdjacencyMatrix()
@@ -1186,4 +1185,3 @@ void IncidenceMatrix::deleteMatrix()
 	}
 	delete[] matrix;
 }
-
