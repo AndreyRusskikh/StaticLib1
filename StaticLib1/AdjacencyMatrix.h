@@ -46,8 +46,8 @@ public:
     friend std::istream& operator>>(std::istream& is, AdjacencyMatrix& adjac);
     friend std::ostream& operator<<(std::ostream& os, const AdjacencyMatrix& adjac);
 
-    int _numVertices;  // Розмір матриці
-    int** matrix = new int* [_numVertices];  // Матриця суміжності
+    int _numVertices;
+    int* matrix;  // Одномерный массив для матрицы смежности
 
     // Створення матриці з нулів
     void createMatrix(int numVert);

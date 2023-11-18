@@ -8,12 +8,13 @@ PointerAdjac::PointerAdjac(AdjacencyMatrix* p)
 AdjacencyMatrix* PointerAdjac::operator -> ()
 {
     count++;
-    std::cout << "”казатель сработал в " << count << " раз!\n";
+    //std::cout << "”казатель сработал в " << count << " раз!\n";
     return ptr;
 }
 PointerAdjac::~PointerAdjac()
 {
     if (ptr != nullptr) delete ptr;
+    
 }
 int PointerAdjac::get_count()
 {

@@ -4,7 +4,7 @@ class PsevdoAdjac
 {
 
 public:
-    PsevdoAdjac(int*& _ptr, int _numRowStart, int _countMat, int _countNumELMat);
+    PsevdoAdjac(int* _ptr, int _numRowStart, int _countMat, int _countNumELMat);
     ~PsevdoAdjac();
 
     PsevdoAdjac& operator=(const AdjacencyMatrix& other);
@@ -12,6 +12,6 @@ public:
     int _numRowStart;
     int countMat;
     int countNumELMat;
-    int*& ptr;
+    int* ptr;
 
 };

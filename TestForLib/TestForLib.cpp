@@ -15,9 +15,11 @@ int main()
     AdjacencyMatrix* adjac2 = new AdjacencyMatrix(10);
     AdjacencyMatrix* adjac3 = new AdjacencyMatrix(10);
 
+    AdjacencyMatrix adjac4(10);
 
     PointerAdjac ptrAdjac(adjac);
     PointerAdjac ptrAdjac2(adjac2);
+    PointerAdjac ptrAdjac3(adjac3);
 
 
     ptrAdjac->addDefault(10);
@@ -34,13 +36,18 @@ int main()
     ptrAdjac->addEdge(2, 3);
     ptrAdjac->addEdge(9, 1);
     ptrAdjac->addEdge(8, 0);
-   // ptrAdjac2->addDefault(10);
+
+    //adjac3->addDefault(10);
+   //ptrAdjac2->addDefault(10);
    
+   ptrAdjac->Show();
 
-    adjac2->operator()(2, 3) = *adjac;
+
+   adjac2->operator()(2, 2) = *adjac;
     
+  // cout << adjac4.matrix[1][1];
 
-    ptrAdjac2->Show();
+   ptrAdjac2->Show();
 
 
     return 0;

@@ -2,7 +2,7 @@
 #include "PseudoAdjac.h"
 
 
-PsevdoAdjac::PsevdoAdjac(int*& _ptr, int _numRowStart, int _countMat, int _countNumELMat)
+PsevdoAdjac::PsevdoAdjac(int* _ptr, int _numRowStart, int _countMat, int _countNumELMat)
 	: ptr(_ptr), _numRowStart(_numRowStart), countMat(_countMat), countNumELMat(_countNumELMat)
 {
 
@@ -10,24 +10,26 @@ PsevdoAdjac::PsevdoAdjac(int*& _ptr, int _numRowStart, int _countMat, int _count
 
 PsevdoAdjac::~PsevdoAdjac()
 {
+	// delete ptr;
 }
 
 PsevdoAdjac& PsevdoAdjac::operator=(const AdjacencyMatrix& other)
 {
-	if (other._numVertices != countNumELMat)
-	{
-		cout << "–азмеры переданной или считываемой матрицы не совпадают с принимающей матрицой\n";
-		return *this;
-	}
+    if (other._numVertices != countNumELMat || countMat <= 0 || _numRowStart < 0 || countMat + _numRowStart > other._numVertices)
+    {
+        cout << "Ќекорректные параметры дл€ присваивани€ матрицы\n";
+        return *this;
+    }
 
-	for (int i = _numRowStart; i < countMat; i++)
-	{
-		for (int j = 0; j < countNumELMat; j++)
-		{
-			ptr[j] = other.matrix[i][j];
-		}
-	}
+    for (int i = _numRowStart; i < countMat +_numRowStart + 1; ++i)
+    {
+        for (int j = 0; j < countNumELMat && j < other._numVertices; ++j)
+        {
+            ptr[j] = other.matrix[i * countNumELMat + j];
+        }
+        ptr = ptr + countNumELMat;
 
-	return *this;
+    }
+
+    return *this;
 }
-

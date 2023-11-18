@@ -13,7 +13,7 @@ AdjacencyMatrix::AdjacencyMatrix()
 AdjacencyMatrix::AdjacencyMatrix(int n)
 {
 	_numVertices = n;
-	matrix = new int* [_numVertices];
+	matrix = new int[_numVertices * _numVertices];
 	createMatrix(_numVertices);
 }
 
@@ -21,8 +21,7 @@ AdjacencyMatrix::AdjacencyMatrix(int n)
 AdjacencyMatrix::~AdjacencyMatrix()
 {
 	deleteMatrix();
-}
-void AdjacencyMatrix::shortestPathUsingAdjacencyMatrix(int source, int destination)
+}void AdjacencyMatrix::shortestPathUsingAdjacencyMatrix(int source, int destination)
 {
 	if (source < 0 || source >= _numVertices || destination < 0 || destination >= _numVertices)
 	{
@@ -66,15 +65,17 @@ void AdjacencyMatrix::shortestPathUsingAdjacencyMatrix(int source, int destinati
 
 		for (int v = 0; v < _numVertices; ++v)
 		{
-			if (!visited[v] && matrix[u][v] && distance[u] != INT_MAX &&
-				distance[u] + matrix[u][v] < distance[v]) {
-				distance[v] = distance[u] + matrix[u][v];
+			if (!visited[v] && matrix[u * _numVertices + v] && distance[u] != INT_MAX &&
+				distance[u] + matrix[u * _numVertices + v] < distance[v])
+			{
+				distance[v] = distance[u] + matrix[u * _numVertices + v];
 				parent[v] = u;
 			}
 		}
 	}
 
-	if (parent[destination] == -1) {
+	if (parent[destination] == -1)
+	{
 		std::cerr << "There is no path from vertex " << source << " to vertex " << destination << "." << std::endl;
 	}
 	else
@@ -121,15 +122,15 @@ int& AdjacencyMatrix::operator[](const int index)
 		int first, second;
 		first = index / _numVertices;
 		second = index - (first * _numVertices);
-		return matrix[first][second];
+		return matrix[first * _numVertices + second];
 	}
 }
+
 std::istream& operator>>(std::istream& is, AdjacencyMatrix& adjac)
 {
 	int numVerFromFile;
 
 	is >> numVerFromFile;
-	//adjac.createMatrix(adjac._numVertices);
 
 	if (numVerFromFile != adjac._numVertices)
 	{
@@ -142,21 +143,22 @@ std::istream& operator>>(std::istream& is, AdjacencyMatrix& adjac)
 		{
 			for (int j = 0; j < adjac._numVertices; ++j)
 			{
-				is >> adjac.matrix[i][j];
+				is >> adjac.matrix[i * adjac._numVertices + j];
 			}
 		}
 	}
-	if (adjac.matrix[0][0] == -1)
+	if (adjac.matrix[0 * adjac._numVertices] == -1)
 	{
-		adjac.matrix[0][0] = 0;
+		adjac.matrix[0 * adjac._numVertices] = 0;
 	}
 
 	return is;
 }
 
+
 std::ostream& operator<<(std::ostream& os, const AdjacencyMatrix& adjac)
 {
-	if (adjac._numVertices <= 0 || adjac.matrix[0][0] == -1)
+	if (adjac._numVertices <= 0 || adjac.matrix[0] == -1)
 	{
 		cout << "Матрица пуста\n";
 		return os;
@@ -167,35 +169,22 @@ std::ostream& operator<<(std::ostream& os, const AdjacencyMatrix& adjac)
 	{
 		for (int j = 0; j < adjac._numVertices; j++)
 		{
-			os << adjac.matrix[i][j] << ' ';
+			os << adjac.matrix[i * adjac._numVertices + j] << ' ';
 		}
 		os << '\n';
 	}
 	return os;
 }
+
+
 PsevdoAdjac AdjacencyMatrix::operator()(int start, int count)
 {
-	PsevdoAdjac psevNull(matrix[start], 0, 0, _numVertices);
-
-	if (_numVertices <= 0)
+	if (_numVertices <= 0 || start < 0 || start >= _numVertices || count < 0 || count + start > _numVertices || &matrix[start * _numVertices] == nullptr)
 	{
-		cout << "Матрица пуста\n";
-		return psevNull;
+		cout << "Некорректные параметры\n";
+		return PsevdoAdjac(nullptr, 0, 0, 0);
 	}
-
-	if (start < 0 && start > _numVertices)
-	{
-		assert(start >= 0 && start < _numVertices);
-		return psevNull;
-
-	}
-	if (count < 0 && count + start > _numVertices)
-	{
-		assert(count >= 0 && count + start < _numVertices);
-		return psevNull;
-	}
-	PsevdoAdjac psev(matrix[start], start, count, _numVertices);
-	
+	PsevdoAdjac psev(&matrix[start * _numVertices], start, count, _numVertices);
 	return psev;
 }
 
@@ -222,7 +211,7 @@ AdjacencyMatrix& AdjacencyMatrix::operator=(const AdjacencyMatrix& other)
 	{
 		for (int j = 0; j < _numVertices; j++)
 		{
-			matrix[i][j] = other.matrix[i][j];
+			matrix[i * _numVertices + j] = other.matrix[i * _numVertices + j];
 		}
 	}
 
@@ -241,7 +230,8 @@ AdjacencyMatrix::AdjacencyMatrix(const AdjacencyMatrix& other)
 	{
 		for (int j = 0; j < _numVertices; j++)
 		{
-			matrix[i][j] = other.matrix[i][j];
+			matrix[i * _numVertices + j] = other.matrix[i * _numVertices + j];
+
 		}
 	}
 
@@ -259,13 +249,11 @@ void AdjacencyMatrix::createMatrix(int numVert)
 	}
 	else
 	{
-		matrix = new int* [numVert];
 		for (int i = 0; i < numVert; i++)
 		{
-			matrix[i] = new int[numVert];
 			for (int j = 0; j < numVert; j++)
 			{
-				matrix[i][j] = 0;
+				matrix[i * _numVertices + j] = 0;
 			}
 		}
 	}
@@ -280,12 +268,12 @@ void AdjacencyMatrix::addEdge(int from, int to)
 		return;
 	else
 	{
-		matrix[from][to] = 1;
+		matrix[from * _numVertices + to] = 1;
 	}
 
-	if (matrix[0][0] == -1)
+	if (matrix[0] == -1)
 	{
-		matrix[0][0] = 0;
+		matrix[0] = 0;
 	}
 
 }
@@ -308,7 +296,7 @@ void AdjacencyMatrix::addDefault(int n)
 }
 void AdjacencyMatrix::Show()
 {
-	if (matrix == nullptr || matrix[0][0] == -1)
+	if (matrix == nullptr || matrix[0] == -1)
 	{
 		std::cout << "Матрица пуста" << "\n";
 		return;
@@ -320,7 +308,7 @@ void AdjacencyMatrix::Show()
 	{
 		for (int j = 0; j < _numVertices; j++)
 		{
-			std::cout << matrix[i][j] << ' ';
+			std::cout << matrix[i * _numVertices + j] << ' ';
 		}
 		std::cout << '\n';
 	}
@@ -328,7 +316,7 @@ void AdjacencyMatrix::Show()
 
 void AdjacencyMatrix::removeEdge(int from, int to)
 {
-	if (matrix[0][0] == -1)
+	if (matrix[0] == -1)
 	{
 		std::cout << "Матрица пуста" << "\n";
 		return;
@@ -338,13 +326,13 @@ void AdjacencyMatrix::removeEdge(int from, int to)
 
 	else
 	{
-		matrix[from][to] = 0;
+		matrix[from * _numVertices + to] = 0;
 	}
 }
 
 void AdjacencyMatrix::replaceEdge(int from, int to, int value)
 {
-	if (matrix[0][0] == -1)
+	if (matrix[0] == -1)
 	{
 		std::cout << "Матрица пуста" << "\n";
 		return;
@@ -354,25 +342,26 @@ void AdjacencyMatrix::replaceEdge(int from, int to, int value)
 
 	else
 	{
-		matrix[from][to] = value;
+		matrix[from * _numVertices + to] = value;
 	}
 }
 
 int AdjacencyMatrix::getEdge(int from, int to)
 {
-	if (matrix[0][0] == -1)
+	if (matrix[0] == -1)
 	{
 		std::cout << "Матрица пуста" << "\n";
-		return matrix[0][0];
+		return matrix[0];
 	}
 	if (from < 0 || from > _numVertices || to < 0 || to > _numVertices)
 		return 0;
 
 	else
 	{
-		return matrix[from][to];
+		return matrix[from * _numVertices + to];
 	}
 }
+
 
 
 // Видалення матриці
@@ -380,11 +369,7 @@ void AdjacencyMatrix::deleteMatrix()
 {
 	if (matrix == nullptr)
 		return;
-	
-	for (int i = 0; i < _numVertices; i++)
-	{
-		delete[] matrix[i];
-	}
+
 	delete[] matrix;
 	matrix = nullptr;
 }
