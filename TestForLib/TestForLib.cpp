@@ -7,7 +7,6 @@ using namespace std;
 
 int main()
 {
-    setlocale(LC_ALL, "rus");
     setlocale(LC_ALL, "ukr");
 
 
@@ -16,6 +15,7 @@ int main()
     AdjacencyMatrix* adjac3 = new AdjacencyMatrix(10);
 
     AdjacencyMatrix adjac4(10);
+    AdjacencyMatrix adjac5(10);
 
     PointerAdjac ptrAdjac(adjac);
     PointerAdjac ptrAdjac2(adjac2);
@@ -37,18 +37,12 @@ int main()
     ptrAdjac->addEdge(9, 1);
     ptrAdjac->addEdge(8, 0);
 
-    //adjac3->addDefault(10);
-   //ptrAdjac2->addDefault(10);
-   
-   ptrAdjac->Show();
+    adjac4.addDefault(10);
+     
 
+    adjac5(2, 2) = adjac4;
 
-   adjac2->operator()(2, 2) = *adjac;
-    
-  // cout << adjac4.matrix[1][1];
-
-   ptrAdjac2->Show();
-
+    adjac5.Show();
 
     return 0;
 }

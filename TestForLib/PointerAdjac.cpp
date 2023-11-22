@@ -8,7 +8,7 @@ PointerAdjac::PointerAdjac(AdjacencyMatrix* p)
 AdjacencyMatrix* PointerAdjac::operator -> ()
 {
     count++;
-    //std::cout << "”казатель сработал в " << count << " раз!\n";
+    std::cout << "The pointer worked in " << count << " times\n";
     return ptr;
 }
 PointerAdjac::~PointerAdjac()
